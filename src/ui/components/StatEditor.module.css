@@ -8,7 +8,27 @@
 .label {
   font-size: 0.78rem;
   color: var(--text-muted);
-  margin: 0 0 0.2rem;
+  margin: 0 0 0.3rem;
+}
+
+.totalRow {
+  display: flex;
+  align-items: flex-end;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.currentWrap,
+.totalWrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.subLabel {
+  display: block;
+  font-size: 0.68rem;
+  color: var(--text-muted);
 }
 
 .total {
@@ -17,7 +37,23 @@
   font-size: 1.3rem;
   color: var(--accent);
   line-height: 1.2;
-  margin-bottom: 0.4rem;
+}
+
+.currentInput {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--accent-alt);
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 1.3rem;
+  line-height: 1.2;
+  padding: 0.1rem 0.4rem;
+  width: 6.5ch;
+}
+
+.currentInput:focus-visible {
+  border-color: var(--accent-alt);
 }
 
 .subInputs {
@@ -28,13 +64,6 @@
 .subField {
   flex: 1;
   min-width: 0;
-}
-
-.subLabel {
-  display: block;
-  font-size: 0.68rem;
-  color: var(--text-muted);
-  margin-bottom: 0.15rem;
 }
 
 .subInput {

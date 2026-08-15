@@ -31,6 +31,14 @@ export class UserData {
     this.ownedEsperIds = new Set((this.espersRoot.target as number[]) ?? []);
   }
 
+  // In seconds. HANDOFF's model documented the top-level `playTime` field
+  // (SaveFile.top.playTime), but that field is always 0 in practice — the
+  // real value lives here instead, confirmed against a real save (42318.44
+  // here matched the in-game 11h45m display exactly).
+  get playTime(): number {
+    return (this.node.playTime as number) ?? 0;
+  }
+
   get gil(): number {
     return (this.node.owendGil as number) ?? 0;
   }

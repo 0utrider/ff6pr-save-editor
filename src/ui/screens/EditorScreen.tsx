@@ -19,6 +19,13 @@ const TABS: TabDef<TabKey>[] = [
   { key: "veldt", label: "Veldt", emoji: "🐾" },
 ];
 
+function formatPlayTime(seconds: number): string {
+  const totalMinutes = Math.floor(seconds / 60);
+  const hours = Math.floor(totalMinutes / 60);
+  const minutes = totalMinutes % 60;
+  return `${hours}:${String(minutes).padStart(2, "0")}`;
+}
+
 interface EditorScreenProps {
   save: SaveFile;
   filename: string;
@@ -59,14 +66,14 @@ export function EditorScreen({ save, filename, onReset }: EditorScreenProps) {
         <span class={styles.title}>FF6PR SAVE EDITOR</span>
         <span class={styles.meta}>
           {save.timestamp && <span>{save.timestamp}</span>}
-          <span>{Math.round(save.playTime)}s playtime</span>
+          <span>{formatPlayTime(save.playTime)} playtime</span>
         </span>
         <span class={styles.headerActions}>
           <button type="button" class={styles.startOverButton} onClick={handleStartOver}>
-            Start over
+            🆕 Start over
           </button>
           <button type="button" class={styles.downloadButton} onClick={handleDownload} disabled={downloading}>
-            {downloading ? "Preparing…" : "Download edited save"}
+            {downloading ? "Preparing…" : "💾 Download"}
           </button>
         </span>
       </header>

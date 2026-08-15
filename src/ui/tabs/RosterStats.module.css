@@ -16,6 +16,30 @@
   gap: 0.7rem;
 }
 
+.levelRow {
+  max-width: 12rem;
+  margin-bottom: 0.9rem;
+}
+
+.hpMpRow {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: 0.9rem;
+  margin-bottom: 0.9rem;
+}
+
+.bonusRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+  margin-top: 0.7rem;
+}
+
+.bonusRow > * {
+  flex: 1;
+  min-width: 8rem;
+}
+
 .sectionNote {
   color: var(--text-muted);
   font-size: 0.76rem;

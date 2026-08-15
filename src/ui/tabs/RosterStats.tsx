@@ -43,16 +43,11 @@ export function RosterStats({ character }: { character: Character }) {
   return (
     <div>
       <WarningBanner>
-        These bonus values are what's actually stored in the save — pushing them far past normal
-        gear bonuses can produce stats the game doesn't expect and may behave oddly in-game. The
-        "Base" numbers are a local reference only (from a static stat table, not the save) and are
-        never written to the file; edit them freely if you know a more accurate value for this
-        character.
+        Bonus values are what's actually saved — large changes may behave oddly in-game.
       </WarningBanner>
 
       <div class={styles.section}>
-        <p class={styles.sectionTitle}>Core</p>
-        <div class={styles.grid}>
+        <div class={styles.levelRow}>
           <NumberField
             label="Level"
             value={stats.additionalLevel}
@@ -63,24 +58,11 @@ export function RosterStats({ character }: { character: Character }) {
               forceUpdate();
             }}
           />
-          <NumberField
-            label="Current HP"
-            value={stats.currentHp}
-            onChange={(v) => {
-              stats.currentHp = v;
-              forceUpdate();
-            }}
-          />
-          <NumberField
-            label="Current MP"
-            value={stats.currentMp}
-            onChange={(v) => {
-              stats.currentMp = v;
-              forceUpdate();
-            }}
-          />
+        </div>
+
+        <div class={styles.hpMpRow}>
           <StatEditor
-            label="Max HP"
+            label="HP"
             base={base.hp}
             bonus={stats.additionalMaxHp}
             onBaseChange={setBaseField("hp")}
@@ -88,14 +70,24 @@ export function RosterStats({ character }: { character: Character }) {
               stats.additionalMaxHp = v;
               forceUpdate();
             }}
+            current={stats.currentHp}
+            onCurrentChange={(v) => {
+              stats.currentHp = v;
+              forceUpdate();
+            }}
           />
           <StatEditor
-            label="Max MP"
+            label="MP"
             base={base.mp}
             bonus={stats.additionalMaxMp}
             onBaseChange={setBaseField("mp")}
             onBonusChange={(v) => {
               stats.additionalMaxMp = v;
+              forceUpdate();
+            }}
+            current={stats.currentMp}
+            onCurrentChange={(v) => {
+              stats.currentMp = v;
               forceUpdate();
             }}
           />
@@ -145,6 +137,8 @@ export function RosterStats({ character }: { character: Character }) {
               forceUpdate();
             }}
           />
+        </div>
+        <div class={styles.bonusRow}>
           <NumberField
             label="Intelligence bonus"
             value={stats.additionalIntelligence}
@@ -229,6 +223,8 @@ export function RosterStats({ character }: { character: Character }) {
               forceUpdate();
             }}
           />
+        </div>
+        <div class={styles.bonusRow}>
           <NumberField
             label="Critical rate bonus"
             value={stats.additionalCriticalRate}

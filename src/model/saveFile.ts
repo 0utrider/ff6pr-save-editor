@@ -25,8 +25,10 @@ export class SaveFile {
     return this.top.timeStamp as string | undefined;
   }
 
+  // In seconds — see UserData.playTime for why this reads from userData
+  // rather than the top-level field HANDOFF documented.
   get playTime(): number {
-    return (this.top.playTime as number) ?? 0;
+    return this.userData.playTime;
   }
 
   isSlotFile(): boolean {
