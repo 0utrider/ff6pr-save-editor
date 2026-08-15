@@ -38,6 +38,9 @@ export class UserData {
   get playTime(): number {
     return (this.node.playTime as number) ?? 0;
   }
+  set playTime(v: number) {
+    this.node.playTime = v;
+  }
 
   get gil(): number {
     return (this.node.owendGil as number) ?? 0;

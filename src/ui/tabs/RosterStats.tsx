@@ -164,10 +164,7 @@ export function RosterStats({ character }: { character: Character }) {
             }}
           />
         </div>
-        <p class={styles.sectionNote}>
-          Intelligence/Spirit/Luck have no known base-stat equivalent yet (not part of the visible
-          FF6PR stat screen we've cross-referenced) — shown as raw bonus values only.
-        </p>
+        <p class={styles.sectionNote}>Shown as raw bonus values only.</p>
       </div>
 
       <div class={styles.section}>
@@ -242,11 +239,7 @@ export function RosterStats({ character }: { character: Character }) {
             }}
           />
         </div>
-        <p class={styles.sectionNote}>
-          Attack's base includes a +{characterBaseStats.UNARMED_ATTACK_BONUS} unarmed-combat
-          constant confirmed against 2 characters so far — treat as a working hypothesis, not as
-          certain as the other stats here.
-        </p>
+        <p class={styles.sectionNote}>Attack base includes +{characterBaseStats.UNARMED_ATTACK_BONUS} constant.</p>
       </div>
     </div>
   );

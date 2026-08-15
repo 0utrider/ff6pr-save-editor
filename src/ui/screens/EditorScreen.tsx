@@ -6,10 +6,12 @@ import { ItemsTab } from "../tabs/ItemsTab.tsx";
 import { SkillsTab } from "../tabs/SkillsTab.tsx";
 import { EspersTab } from "../tabs/EspersTab.tsx";
 import { VeldtTab } from "../tabs/VeldtTab.tsx";
+import { OtherTab } from "../tabs/OtherTab.tsx";
+import { useForceUpdate } from "../hooks.ts";
 import type { SaveFile } from "../../model/saveFile.ts";
 import styles from "./EditorScreen.module.css";
 
-type TabKey = "roster" | "items" | "skills" | "espers" | "veldt";
+type TabKey = "roster" | "items" | "skills" | "espers" | "veldt" | "other";
 
 const TABS: TabDef<TabKey>[] = [
   { key: "roster", label: "Roster", emoji: "👥" },
@@ -17,6 +19,7 @@ const TABS: TabDef<TabKey>[] = [
   { key: "skills", label: "Skills", emoji: "⚔️" },
   { key: "espers", label: "Espers", emoji: "🔮" },
   { key: "veldt", label: "Veldt", emoji: "🐾" },
+  { key: "other", label: "Other", emoji: "🧰" },
 ];
 
 function formatPlayTime(seconds: number): string {
@@ -35,6 +38,7 @@ interface EditorScreenProps {
 export function EditorScreen({ save, filename, onReset }: EditorScreenProps) {
   const [tab, setTab] = useState<TabKey>("roster");
   const [downloading, setDownloading] = useState(false);
+  const forceUpdate = useForceUpdate();
 
   async function handleDownload() {
     setDownloading(true);
@@ -70,7 +74,7 @@ export function EditorScreen({ save, filename, onReset }: EditorScreenProps) {
         </span>
         <span class={styles.headerActions}>
           <button type="button" class={styles.startOverButton} onClick={handleStartOver}>
-            🆕 Start over
+            🔄 Start over
           </button>
           <button type="button" class={styles.downloadButton} onClick={handleDownload} disabled={downloading}>
             {downloading ? "Preparing…" : "💾 Download"}
@@ -87,6 +91,7 @@ export function EditorScreen({ save, filename, onReset }: EditorScreenProps) {
           {tab === "skills" && <SkillsTab save={save} />}
           {tab === "espers" && <EspersTab save={save} />}
           {tab === "veldt" && <VeldtTab save={save} />}
+          {tab === "other" && <OtherTab save={save} onChange={forceUpdate} />}
         </WindowFrame>
       </div>
     </div>
