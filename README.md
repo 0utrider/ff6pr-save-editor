@@ -29,3 +29,10 @@ npm run build    # typecheck + production build
 
 `gamesaves/` (git-ignored) is a local-only real save directory used to verify the crypto
 round-trip; it is not part of the repo.
+
+## License
+
+MIT — see `LICENSE`. Guided by (not copied from) the reverse-engineered save format and logic in
+[AnotherFFVIPRSaveEditor](https://github.com/GiulioSamp/AnotherFFVIPRSaveEditor) (also MIT,
+Copyright (c) 2026 Giulio Samperi); upstream contributions from this investigation:
+[PR #9](https://github.com/GiulioSamp/AnotherFFVIPRSaveEditor/pull/9).
