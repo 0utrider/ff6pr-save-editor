@@ -15,11 +15,20 @@ const SUB_TABS: TabDef<SubTabKey>[] = [
   { key: "quest", label: "Quest Items", emoji: "🗝️" },
 ];
 
+// Every Important (quest) item id also appears in Normal (as category
+// "Other") — the game's own item catalog duplicates them, not a data bug
+// here. Keep name resolution against the full Normal list (so a save that
+// genuinely has one of these ids in normalOwnedItemList still resolves
+// correctly), but drop them from the Items reference list specifically —
+// they already have their own entry in the Quest Items reference list.
+const IMPORTANT_IDS = new Set(items.Important.map((i) => i.id));
+
 export function ItemsTab({ save }: { save: SaveFile }) {
   const [sub, setSub] = useState<SubTabKey>("items");
   const forceUpdate = useForceUpdate();
 
   const catalog = sub === "items" ? items.Normal : items.Important;
+  const referenceCatalog = sub === "items" ? items.Normal.filter((i) => !IMPORTANT_IDS.has(i.id)) : items.Important;
   const inventory = sub === "items" ? save.userData.normalInventory : save.userData.importantInventory;
 
   return (
@@ -34,7 +43,7 @@ export function ItemsTab({ save }: { save: SaveFile }) {
           />
         </div>
         <div class={styles.reference}>
-          <ItemReferenceList items={catalog} />
+          <ItemReferenceList items={referenceCatalog} />
         </div>
       </div>
     </div>
