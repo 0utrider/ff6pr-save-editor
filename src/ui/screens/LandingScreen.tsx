@@ -38,11 +38,8 @@ export function LandingScreen({ onLoaded }: LandingScreenProps) {
 
   return (
     <div class={styles.page}>
-      <div class={styles.wordmark}>FF6PR SAVE EDITOR</div>
-      <p class={styles.subtitle}>
-        Edit a Final Fantasy VI Pixel Remaster save file entirely in your browser. Nothing is
-        uploaded anywhere — the file never leaves this device.
-      </p>
+      <div class={styles.wordmark}>FF6PR 💾 SAVE EDITOR</div>
+      <p class={styles.subtitle}>Edit a Final Fantasy VI Pixel Remaster save entirely from your browser.</p>
       <WindowFrame class={styles.card}>
         <div
           class={dragActive ? `${styles.dropZone} ${styles.dropZoneActive}` : styles.dropZone}
@@ -58,7 +55,6 @@ export function LandingScreen({ onLoaded }: LandingScreenProps) {
           <div class={styles.dropLabel}>
             {loading ? "Reading save file…" : "Drop a save file here, or click to browse"}
           </div>
-          <div class={styles.dropHint}>Usually found under My Games / FINAL FANTASY VI PR / Steam</div>
         </div>
         <input
           ref={inputRef}
@@ -71,10 +67,34 @@ export function LandingScreen({ onLoaded }: LandingScreenProps) {
         />
         {error && <div class={styles.error}>{error}</div>}
       </WindowFrame>
-      <p class={styles.privacyNote}>
-        No backend, no account, no analytics on your save data — everything runs locally in this
-        tab.
-      </p>
+
+      <details class={styles.instructions}>
+        <summary class={styles.instructionsToggle}>📖 Instructions</summary>
+        <div class={styles.instructionsBody}>
+          <p>
+            <strong>Windows</strong>
+            <br />
+            <code class={styles.path}>Documents\My Games\FINAL FANTASY VI PR\Steam\&lt;your Steam ID&gt;\</code>
+          </p>
+          <p>
+            <strong>Steam Deck</strong>
+            <br />
+            Same file, under the Proton prefix — switch to Desktop Mode and open a file manager to:
+            <br />
+            <code class={styles.path}>
+              ~/.local/share/Steam/steamapps/compatdata/&lt;FF6PR's App ID&gt;/pfx/drive_c/users/steamuser/Documents/My
+              Games/FINAL FANTASY VI PR/Steam/&lt;your Steam ID&gt;/
+            </code>
+            <br />
+            Find the App ID via Steam → right-click the game → Properties, or look it up on SteamDB.
+          </p>
+          <p>
+            Inside that folder, look for files with gibberish, random-character names — the actual save
+            data is around 50 KB or larger. Ignore anything close to 1 KB; those are just metadata, not
+            the save itself.
+          </p>
+        </div>
+      </details>
     </div>
   );
 }
