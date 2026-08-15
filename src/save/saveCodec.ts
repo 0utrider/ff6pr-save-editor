@@ -1,6 +1,6 @@
 import { stripBom, addBom, base64Decode, base64Encode, concatBytes } from "./framing.ts";
 import { inflateRaw, deflateRaw } from "./compression.ts";
-import { addZeroPadding } from "./padding.ts";
+import { addZeroPadding, stripZeroPadding } from "./padding.ts";
 import { cbcEncrypt, cbcDecrypt } from "./cbc.ts";
 import { SAVE_KEY, SAVE_IV } from "./constants.ts";
 
@@ -13,11 +13,30 @@ export async function decryptSave(fileBytes: Uint8Array): Promise<string> {
   const base64Text = textDecoder.decode(stripped);
   const ciphertext = base64Decode(base64Text);
   const padded = cbcDecrypt(ciphertext, SAVE_KEY, SAVE_IV);
-  // No explicit zero-padding strip — see padding.ts for why. DEFLATE is
-  // self-terminating, so inflating the still-padded buffer is correct and
-  // avoids the ambiguous-trailing-zero-byte edge case.
-  const inflated = await inflateRaw(padded);
+  const inflated = await inflateSkippingPadding(padded);
   return textDecoder.decode(inflated);
+}
+
+// stripZeroPadding's scan-based guess is right the overwhelming majority of
+// the time, but it can't distinguish a real trailing zero byte from padding
+// when they're contiguous, and over-strips in that case (see padding.ts).
+// Real DEFLATE data doesn't parse if truncated even one byte short, so
+// treat the guess as a starting point and grow the candidate one byte at a
+// time until inflate actually succeeds — self-correcting instead of
+// trying to perfectly guess the boundary up front. Stripping is required
+// in real browsers (Chromium's DecompressionStream rejects trailing
+// garbage after the DEFLATE end marker) — Node's zlib binding is lenient
+// about it, which is why this needed a real-browser test to surface.
+async function inflateSkippingPadding(padded: Uint8Array): Promise<Uint8Array> {
+  const guess = stripZeroPadding(padded);
+  for (let len = guess.length; len <= padded.length; len++) {
+    try {
+      return await inflateRaw(padded.subarray(0, len));
+    } catch {
+      // Over-stripped into real compressed data — include one more byte.
+    }
+  }
+  throw new Error("decryptSave: could not locate the end of the compressed data after removing padding");
 }
 
 export async function encryptSave(json: string): Promise<Uint8Array> {
