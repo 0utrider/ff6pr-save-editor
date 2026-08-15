@@ -68,6 +68,7 @@
 
 .instructions {
   width: min(520px, 100%);
+  text-align: center;
 }
 
 .instructionsToggle {
@@ -96,6 +97,7 @@
   color: var(--text-muted);
   font-size: 0.82rem;
   line-height: 1.6;
+  text-align: left;
 }
 
 .instructionsBody strong {

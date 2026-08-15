@@ -89,9 +89,11 @@ export function LandingScreen({ onLoaded }: LandingScreenProps) {
             Find the App ID via Steam → right-click the game → Properties, or look it up on SteamDB.
           </p>
           <p>
-            Inside that folder, look for files with gibberish, random-character names — the actual save
-            data is around 50 KB or larger. Ignore anything close to 1 KB; those are just metadata, not
-            the save itself.
+            <strong>Identifying Individual Saves</strong>
+            <br />
+            Look for gibberish, random-character filenames of 50 KB or larger — skip anything near 1 KB,
+            that's just metadata. Sort by date modified: the largest, most recent file is usually your
+            latest save.
           </p>
         </div>
       </details>
