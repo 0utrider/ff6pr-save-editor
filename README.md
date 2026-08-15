@@ -9,9 +9,11 @@ Upstream contributions from this investigation: [PR #9](https://github.com/Giuli
 
 ## Status
 
-Crypto core (`src/save/`) is built and verified against real save data: Rijndael-256-CBC, raw
-DEFLATE framing, base64/BOM framing, and the nested-JSON-string unwrap pattern. Data tables, the
-typed model layer, and the UI are not built yet.
+Crypto core (`src/save/`), data tables (`src/data/`), and the typed model layer (`src/model/`) are
+built and verified against real save data: Rijndael-256-CBC, raw DEFLATE framing, base64/BOM
+framing, the nested-JSON-string unwrap pattern, and typed wrappers (Character, Inventory,
+Equipment, UserData, SaveFile, ...) mirroring the upstream class boundaries. The UI (`src/ui/`) is
+not built yet.
 
 ## Development
 
