@@ -1,0 +1,80 @@
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  padding: 2rem;
+}
+
+.wordmark {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  color: var(--accent);
+  letter-spacing: 0.02em;
+  text-align: center;
+}
+
+.subtitle {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  text-align: center;
+  max-width: 32em;
+  margin: -0.5rem 0 0;
+}
+
+.card {
+  width: min(520px, 100%);
+}
+
+.dropZone {
+  border: 2px dashed var(--border);
+  border-radius: var(--radius);
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+  cursor: pointer;
+}
+
+.dropZone:hover,
+.dropZoneActive {
+  border-color: var(--accent-alt);
+  background: color-mix(in srgb, var(--accent-alt) 8%, transparent);
+}
+
+.dropIcon {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.dropLabel {
+  font-size: 0.95rem;
+  color: var(--text);
+}
+
+.dropHint {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 0.4rem;
+}
+
+.fileInput {
+  display: none;
+}
+
+.error {
+  margin-top: 1rem;
+  border: 1px solid var(--danger);
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--danger) 12%, var(--surface));
+  color: var(--text);
+  font-size: 0.85rem;
+  padding: 0.7rem 0.9rem;
+}
+
+.privacyNote {
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  text-align: center;
+  max-width: 32em;
+}

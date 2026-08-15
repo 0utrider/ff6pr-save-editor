@@ -1,0 +1,59 @@
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.9rem 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.title {
+  font-family: var(--font-display);
+  color: var(--accent);
+  font-size: 1rem;
+}
+
+.meta {
+  display: flex;
+  gap: 1rem;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+}
+
+.downloadButton {
+  appearance: none;
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--accent) 15%, var(--surface));
+  color: var(--accent);
+  font-weight: 600;
+  font-size: 0.85rem;
+  padding: 0.5rem 0.9rem;
+}
+
+.downloadButton:hover {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+.downloadButton:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.content {
+  flex: 1;
+  padding: 1rem;
+}
+
+.panel {
+  max-width: 960px;
+  margin: 0 auto;
+}

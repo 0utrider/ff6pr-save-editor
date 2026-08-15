@@ -1,0 +1,45 @@
+.bar {
+  display: flex;
+  gap: 0.25rem;
+  padding: 0 0.75rem;
+  overflow-x: auto;
+}
+
+.tab {
+  appearance: none;
+  border: 1px solid var(--border);
+  border-bottom: none;
+  background: var(--bg);
+  color: var(--text-muted);
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 0.6rem 1rem 0.5rem;
+  clip-path: polygon(8px 0, calc(100% - 8px) 0, 100% 100%, 0 100%);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  white-space: nowrap;
+}
+
+.tab:hover {
+  color: var(--text);
+  background: color-mix(in srgb, var(--accent-alt) 12%, var(--bg));
+}
+
+.tabActive {
+  composes: tab;
+  background: var(--surface);
+  color: var(--accent);
+  border-color: var(--border);
+}
+
+.cursor {
+  color: var(--accent);
+  font-size: 0.75em;
+}
+
+.emoji {
+  font-size: 1rem;
+  line-height: 1;
+}

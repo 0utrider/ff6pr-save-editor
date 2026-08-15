@@ -1,0 +1,96 @@
+.toolbar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 0.6rem;
+}
+
+.addButton {
+  appearance: none;
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--accent-alt);
+  font-size: 0.82rem;
+  padding: 0.4rem 0.7rem;
+}
+
+.addButton:hover {
+  border-color: var(--accent-alt);
+}
+
+.table {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.headerRow,
+.row {
+  display: grid;
+  grid-template-columns: 5rem 1fr 6rem 2.5rem;
+  gap: 0.6rem;
+  align-items: center;
+  padding: 0.4rem 0.7rem;
+}
+
+.headerRow {
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-bottom: 1px solid var(--border);
+}
+
+.row {
+  border-bottom: 1px solid var(--border);
+}
+
+.row:last-child {
+  border-bottom: none;
+}
+
+.idInput {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  padding: 0.3rem 0.4rem;
+  width: 100%;
+}
+
+.qtyInput {
+  composes: idInput;
+  color: var(--text);
+}
+
+.name {
+  font-size: 0.88rem;
+}
+
+.unknown {
+  font-style: italic;
+  color: var(--text-muted);
+}
+
+.removeButton {
+  appearance: none;
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--danger);
+  font-size: 0.8rem;
+  padding: 0.3rem;
+}
+
+.removeButton:hover {
+  border-color: var(--danger);
+}
+
+.empty {
+  padding: 1rem;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  text-align: center;
+}
