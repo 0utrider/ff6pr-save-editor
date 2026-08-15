@@ -35,7 +35,7 @@ export function RosterTab({ save }: { save: SaveFile }) {
       />
       <div style={{ height: "0.9rem" }} />
       <SubTabBar tabs={SUB_TABS} active={sub} onSelect={setSub} />
-      {sub === "stats" && <RosterStats character={character} />}
+      {sub === "stats" && <RosterStats key={character.id} character={character} />}
       {sub === "magic" && <RosterMagic character={character} />}
       {sub === "equipment" && <RosterEquipment character={character} inventory={save.userData.normalInventory} />}
       {sub === "commands" && <RosterCommands character={character} />}

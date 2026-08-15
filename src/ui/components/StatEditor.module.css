@@ -1,0 +1,54 @@
+.block {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg);
+  padding: 0.55rem 0.6rem;
+}
+
+.label {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin: 0 0 0.2rem;
+}
+
+.total {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 1.3rem;
+  color: var(--accent);
+  line-height: 1.2;
+  margin-bottom: 0.4rem;
+}
+
+.subInputs {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.subField {
+  flex: 1;
+  min-width: 0;
+}
+
+.subLabel {
+  display: block;
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  margin-bottom: 0.15rem;
+}
+
+.subInput {
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.82rem;
+  padding: 0.3rem 0.4rem;
+}
+
+.subInput:focus-visible {
+  border-color: var(--accent-alt);
+}

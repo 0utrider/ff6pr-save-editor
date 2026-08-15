@@ -73,12 +73,6 @@ const CONFIGS: SkillConfig[] = [
 
 const NOT_DETECTED = -1;
 
-// The roster's own englishName for a job — display-only, never used to
-// find a character (see findAutoOwner for why).
-function ownerDisplayName(jobId: number): string | undefined {
-  return characterRoster.All.find((r) => r.jobId === jobId && !r.isNpc)?.englishName;
-}
-
 // jobId is the stable identifier (per HANDOFF: the save's own `id` shifts
 // with Three Scenarios recruitment order and must never be used for
 // identity) — so matching must go through the SAVE's characters by their
@@ -131,7 +125,7 @@ export function SkillsTab({ save }: { save: SaveFile }) {
       <div style={{ height: "0.9rem" }} />
       {!character ? (
         <WarningBanner tone="info">
-          {ownerDisplayName(config.ownerJobId) ?? "This character"} wasn't auto-detected in this save —
+          {characterRoster.forJobId(config.ownerJobId)?.englishName ?? "This character"} wasn't auto-detected in this save —
           that's expected if they haven't joined your party yet. Pick a character above once
           they've joined, or manually select one now.
         </WarningBanner>

@@ -3,6 +3,12 @@
 // HP/MP grow per level (see levelGrowth.ts).
 // Source: AnotherFFVIPRSaveEditor, Ffvi.SaveTool.Lib/Data/CharacterBaseStats.cs
 // (MIT); FF wiki "Final Fantasy VI stats".
+//
+// Verified against real in-game values (gear removed) for Locke and Edgar:
+// total = this table's base + the save's corresponding `addtional*` field,
+// exactly, for hp/mp/strength/speed/stamina/magic/defense/evasion/
+// magicDefense/magicEvasion. `attack` was off by exactly +10 for both
+// characters checked — see UNARMED_ATTACK_BONUS below.
 
 import * as characterRoster from "./characterRoster.ts";
 
@@ -20,6 +26,14 @@ export interface RawStats {
   magicEvasion: number;
   escapeSuccess: number;
 }
+
+// This table's `attack` values are the SNES/wiki base attack, but real
+// gear-removed totals ran exactly 10 higher for both characters checked
+// (Locke: base 14, actual 24; Edgar: base 20, actual 30) — apparently a
+// flat unarmed-combat constant Pixel Remaster adds that isn't in the
+// source table. Only 2 data points confirmed so far; treat as a working
+// hypothesis, not as certain as the other stats below.
+export const UNARMED_ATTACK_BONUS = 10;
 
 export const ByName: Record<string, RawStats> = {
   Terra: { hp: 40, mp: 16, strength: 31, speed: 33, stamina: 28, magic: 39, attack: 12, defense: 42, evasion: 5, magicDefense: 33, magicEvasion: 7, escapeSuccess: 4 },
@@ -40,10 +54,10 @@ export const ByName: Record<string, RawStats> = {
   Leo: { hp: 50, mp: 10, strength: 52, speed: 38, stamina: 41, magic: 36, attack: 60, defense: 63, evasion: 22, magicDefense: 41, magicEvasion: 21, escapeSuccess: 3 },
 };
 
-// Look up by the save's character id, NOT by its `name` field: `name` is
-// localised (Chinese, Japanese, etc.) and player-editable in-game, so it
-// cannot be matched against these English keys. See characterRoster.ts.
-export function forId(characterId: number): RawStats | undefined {
-  const entry = characterRoster.forId(characterId);
+// Look up by the save character's jobId, NOT by `id` (unstable — see
+// characterRoster.ts) or by its `name` field (localised and player-
+// editable in-game, can't be matched against these English keys).
+export function forJobId(jobId: number): RawStats | undefined {
+  const entry = characterRoster.forJobId(jobId);
   return entry ? ByName[entry.englishName] : undefined;
 }
