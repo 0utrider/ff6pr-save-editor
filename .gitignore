@@ -1,0 +1,7 @@
+node_modules/
+dist/
+*.local
+*.tsbuildinfo
+
+# User's real save data — never commit
+gamesaves/
