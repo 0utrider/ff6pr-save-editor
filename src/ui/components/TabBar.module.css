@@ -1,21 +1,20 @@
 .bar {
   display: flex;
-  gap: 0.25rem;
-  padding: 0 0.75rem;
+  gap: 1.5rem;
+  padding: 0 0.75rem 0.6rem;
+  border-bottom: 1px solid var(--border);
   overflow-x: auto;
 }
 
 .tab {
   appearance: none;
-  border: 1px solid var(--border);
-  border-bottom: none;
-  background: var(--bg);
+  border: none;
+  background: none;
   color: var(--text-muted);
   font-family: var(--font-sans);
   font-weight: 600;
   font-size: 0.9rem;
-  padding: 0.6rem 1rem 0.5rem;
-  clip-path: polygon(8px 0, calc(100% - 8px) 0, 100% 100%, 0 100%);
+  padding: 0.4rem 0;
   display: flex;
   align-items: center;
   gap: 0.4rem;
@@ -24,14 +23,11 @@
 
 .tab:hover {
   color: var(--text);
-  background: color-mix(in srgb, var(--accent-alt) 12%, var(--bg));
 }
 
 .tabActive {
   composes: tab;
-  background: var(--surface);
   color: var(--accent);
-  border-color: var(--border);
 }
 
 .cursor {
