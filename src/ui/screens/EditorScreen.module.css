@@ -27,6 +27,27 @@
   font-size: 0.78rem;
 }
 
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.startOverButton {
+  appearance: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: none;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  padding: 0.5rem 0.8rem;
+}
+
+.startOverButton:hover {
+  color: var(--danger);
+  border-color: var(--danger);
+}
+
 .downloadButton {
   appearance: none;
   border: 1px solid var(--accent);

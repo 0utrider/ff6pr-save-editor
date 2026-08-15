@@ -2,6 +2,7 @@ import { useState } from "preact/hooks";
 import { SubTabBar } from "../components/SubTabBar.tsx";
 import { CheckboxList } from "../components/CheckboxList.tsx";
 import { Dropdown } from "../components/Dropdown.tsx";
+import { WarningBanner } from "../components/WarningBanner.tsx";
 import { useForceUpdate } from "../hooks.ts";
 import * as bushido from "../../data/bushido.ts";
 import * as blitzes from "../../data/blitzes.ts";
@@ -69,6 +70,18 @@ const CONFIGS: SkillConfig[] = [
   },
 ];
 
+const NOT_DETECTED = -1;
+
+// jobId alone isn't enough to find the owner: several jobIds are shared
+// with NPCs (jobId 11 — Dance's owner, Mog — is also shared by the nine
+// NPC moogles, so a naive "first character with this jobId" match picks
+// whichever NPC moogle happens to sort first, not Mog). The roster's own
+// isNpc flag disambiguates, matching HANDOFF's roster note that jobId is
+// only safe for this lookup once NPCs are excluded.
+function findOwnerRosterEntry(jobId: number): characterRoster.RosterEntry | undefined {
+  return characterRoster.All.find((r) => r.jobId === jobId && !r.isNpc);
+}
+
 export function SkillsTab({ save }: { save: SaveFile }) {
   const [sub, setSub] = useState<SubTabKey>("bushido");
   const [overrides, setOverrides] = useState<Partial<Record<SubTabKey, number>>>({});
@@ -76,38 +89,50 @@ export function SkillsTab({ save }: { save: SaveFile }) {
 
   const config = CONFIGS.find((c) => c.key === sub)!;
   const characters = save.userData.characters;
-  const autoOwner = characters.find((c) => c.jobId === config.ownerJobId) ?? characters[0];
-  const selectedId = overrides[sub] ?? autoOwner?.id;
-  const character = characters.find((c) => c.id === selectedId) ?? autoOwner;
 
-  if (!character) return <p>No characters in this save.</p>;
+  const ownerRosterEntry = findOwnerRosterEntry(config.ownerJobId);
+  const autoOwner = ownerRosterEntry ? characters.find((c) => c.id === ownerRosterEntry.id) : undefined;
+
+  const selectedId = overrides[sub] ?? autoOwner?.id ?? NOT_DETECTED;
+  const character = characters.find((c) => c.id === selectedId);
 
   return (
     <div>
       <SubTabBar tabs={CONFIGS} active={sub} onSelect={setSub} />
       <Dropdown
         label="Character"
-        value={character.id}
-        options={characters.map((c) => ({ value: c.id, label: `${c.name} (id ${c.id})` }))}
+        value={selectedId}
+        options={[
+          { value: NOT_DETECTED, label: "Not detected!" },
+          ...characters.map((c) => ({ value: c.id, label: `${c.name} (id ${c.id})` })),
+        ]}
         onChange={(v) => setOverrides((o) => ({ ...o, [sub]: Number(v) }))}
       />
-      <div style={{ height: "0.75rem" }} />
-      <CheckboxList
-        items={config.all}
-        isChecked={(id) => character.abilities.knowsAbility(id)}
-        onToggle={(id) => {
-          if (character.abilities.knowsAbility(id)) character.abilities.forgetSkill(id);
-          else character.abilities.learnSkill(id, config.contentIdOffset);
-          forceUpdate();
-        }}
-        onSetAll={(ids, checked) => {
-          for (const id of ids) {
-            if (checked) character.abilities.learnSkill(id, config.contentIdOffset);
-            else character.abilities.forgetSkill(id);
-          }
-          forceUpdate();
-        }}
-      />
+      <div style={{ height: "0.9rem" }} />
+      {!character ? (
+        <WarningBanner tone="info">
+          {ownerRosterEntry?.englishName ?? "This character"} wasn't auto-detected in this save —
+          that's expected if they haven't joined your party yet. Pick a character above once
+          they've joined, or manually select one now.
+        </WarningBanner>
+      ) : (
+        <CheckboxList
+          items={config.all}
+          isChecked={(id) => character.abilities.knowsAbility(id)}
+          onToggle={(id) => {
+            if (character.abilities.knowsAbility(id)) character.abilities.forgetSkill(id);
+            else character.abilities.learnSkill(id, config.contentIdOffset);
+            forceUpdate();
+          }}
+          onSetAll={(ids, checked) => {
+            for (const id of ids) {
+              if (checked) character.abilities.learnSkill(id, config.contentIdOffset);
+              else character.abilities.forgetSkill(id);
+            }
+            forceUpdate();
+          }}
+        />
+      )}
     </div>
   );
 }

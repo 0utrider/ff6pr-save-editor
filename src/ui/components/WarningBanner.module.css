@@ -15,3 +15,14 @@
   color: var(--danger);
   flex-shrink: 0;
 }
+
+.bannerInfo {
+  composes: banner;
+  background: color-mix(in srgb, var(--accent-alt) 12%, var(--surface));
+  border-color: var(--accent-alt);
+}
+
+.iconInfo {
+  composes: icon;
+  color: var(--accent-alt);
+}

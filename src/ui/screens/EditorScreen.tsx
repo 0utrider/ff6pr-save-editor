@@ -22,9 +22,10 @@ const TABS: TabDef<TabKey>[] = [
 interface EditorScreenProps {
   save: SaveFile;
   filename: string;
+  onReset: () => void;
 }
 
-export function EditorScreen({ save, filename }: EditorScreenProps) {
+export function EditorScreen({ save, filename, onReset }: EditorScreenProps) {
   const [tab, setTab] = useState<TabKey>("roster");
   const [downloading, setDownloading] = useState(false);
 
@@ -46,6 +47,12 @@ export function EditorScreen({ save, filename }: EditorScreenProps) {
     }
   }
 
+  function handleStartOver() {
+    if (confirm("Start over with a different save file? Any changes not downloaded yet will be lost.")) {
+      onReset();
+    }
+  }
+
   return (
     <div class={styles.page}>
       <header class={styles.header}>
@@ -54,9 +61,14 @@ export function EditorScreen({ save, filename }: EditorScreenProps) {
           {save.timestamp && <span>{save.timestamp}</span>}
           <span>{Math.round(save.playTime)}s playtime</span>
         </span>
-        <button type="button" class={styles.downloadButton} onClick={handleDownload} disabled={downloading}>
-          {downloading ? "Preparing…" : "Download edited save"}
-        </button>
+        <span class={styles.headerActions}>
+          <button type="button" class={styles.startOverButton} onClick={handleStartOver}>
+            Start over
+          </button>
+          <button type="button" class={styles.downloadButton} onClick={handleDownload} disabled={downloading}>
+            {downloading ? "Preparing…" : "Download edited save"}
+          </button>
+        </span>
       </header>
 
       <TabBar tabs={TABS} active={tab} onSelect={setTab} />

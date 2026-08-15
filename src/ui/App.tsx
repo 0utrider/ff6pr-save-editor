@@ -10,5 +10,5 @@ export function App() {
     return <LandingScreen onLoaded={(save, filename) => setLoaded({ save, filename })} />;
   }
 
-  return <EditorScreen save={loaded.save} filename={loaded.filename} />;
+  return <EditorScreen save={loaded.save} filename={loaded.filename} onReset={() => setLoaded(null)} />;
 }

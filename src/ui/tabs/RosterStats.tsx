@@ -14,7 +14,6 @@ const ESPER_OPTIONS = [
 export function RosterStats({ character }: { character: Character }) {
   const forceUpdate = useForceUpdate();
   const stats = character.stats;
-  const level = levelGrowth.levelForExp(character.currentExp);
 
   return (
     <div>
@@ -23,7 +22,7 @@ export function RosterStats({ character }: { character: Character }) {
         <div class={styles.grid}>
           <NumberField
             label="Level"
-            value={level}
+            value={stats.additionalLevel}
             min={levelGrowth.MinLevel}
             max={levelGrowth.MaxLevel}
             onChange={(v) => {
@@ -79,7 +78,7 @@ export function RosterStats({ character }: { character: Character }) {
         <p class={styles.sectionTitle}>Attributes</p>
         <div class={styles.grid}>
           <NumberField
-            label="Power"
+            label="Power bonus"
             value={stats.additionalPower}
             onChange={(v) => {
               stats.additionalPower = v;
@@ -87,7 +86,7 @@ export function RosterStats({ character }: { character: Character }) {
             }}
           />
           <NumberField
-            label="Vitality"
+            label="Vitality bonus"
             value={stats.additionalVitality}
             onChange={(v) => {
               stats.additionalVitality = v;
@@ -95,7 +94,7 @@ export function RosterStats({ character }: { character: Character }) {
             }}
           />
           <NumberField
-            label="Agility"
+            label="Agility bonus"
             value={stats.additionalAgility}
             onChange={(v) => {
               stats.additionalAgility = v;
@@ -103,7 +102,7 @@ export function RosterStats({ character }: { character: Character }) {
             }}
           />
           <NumberField
-            label="Intelligence"
+            label="Intelligence bonus"
             value={stats.additionalIntelligence}
             onChange={(v) => {
               stats.additionalIntelligence = v;
@@ -111,7 +110,7 @@ export function RosterStats({ character }: { character: Character }) {
             }}
           />
           <NumberField
-            label="Spirit"
+            label="Spirit bonus"
             value={stats.additionalSpirit}
             onChange={(v) => {
               stats.additionalSpirit = v;
@@ -119,7 +118,7 @@ export function RosterStats({ character }: { character: Character }) {
             }}
           />
           <NumberField
-            label="Luck"
+            label="Luck bonus"
             value={stats.additionalLuck}
             onChange={(v) => {
               stats.additionalLuck = v;
@@ -133,7 +132,7 @@ export function RosterStats({ character }: { character: Character }) {
         <p class={styles.sectionTitle}>Battle</p>
         <div class={styles.grid}>
           <NumberField
-            label="Attack"
+            label="Attack bonus"
             value={stats.additionalAttack}
             onChange={(v) => {
               stats.additionalAttack = v;
@@ -141,7 +140,7 @@ export function RosterStats({ character }: { character: Character }) {
             }}
           />
           <NumberField
-            label="Defense"
+            label="Defense bonus"
             value={stats.additionalDefense}
             onChange={(v) => {
               stats.additionalDefense = v;
@@ -149,7 +148,7 @@ export function RosterStats({ character }: { character: Character }) {
             }}
           />
           <NumberField
-            label="Magic"
+            label="Magic bonus"
             value={stats.additionalMagic}
             onChange={(v) => {
               stats.additionalMagic = v;
@@ -157,7 +156,7 @@ export function RosterStats({ character }: { character: Character }) {
             }}
           />
           <NumberField
-            label="Magic defense"
+            label="Magic defense bonus"
             value={stats.additionalMagicDefense}
             onChange={(v) => {
               stats.additionalMagicDefense = v;
@@ -165,7 +164,7 @@ export function RosterStats({ character }: { character: Character }) {
             }}
           />
           <NumberField
-            label="Evasion rate"
+            label="Evasion rate bonus"
             value={stats.additionalEvasionRate}
             onChange={(v) => {
               stats.additionalEvasionRate = v;
@@ -173,7 +172,7 @@ export function RosterStats({ character }: { character: Character }) {
             }}
           />
           <NumberField
-            label="Magic evasion rate"
+            label="Magic evasion rate bonus"
             value={stats.additionalMagicEvasionRate}
             onChange={(v) => {
               stats.additionalMagicEvasionRate = v;
@@ -181,7 +180,7 @@ export function RosterStats({ character }: { character: Character }) {
             }}
           />
           <NumberField
-            label="Critical rate"
+            label="Critical rate bonus"
             value={stats.additionalCriticalRate}
             onChange={(v) => {
               stats.additionalCriticalRate = v;
@@ -189,7 +188,7 @@ export function RosterStats({ character }: { character: Character }) {
             }}
           />
           <NumberField
-            label="Accuracy rate"
+            label="Accuracy rate bonus"
             value={stats.additionalAccuracyRate}
             onChange={(v) => {
               stats.additionalAccuracyRate = v;

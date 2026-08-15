@@ -1,0 +1,28 @@
+.layout {
+  display: flex;
+  gap: 1.25rem;
+  align-items: flex-start;
+}
+
+.editable {
+  flex: 3;
+  min-width: 0;
+}
+
+.reference {
+  flex: 2;
+  min-width: 220px;
+  position: sticky;
+  top: 1rem;
+}
+
+@media (max-width: 720px) {
+  .layout {
+    flex-direction: column;
+  }
+
+  .reference {
+    position: static;
+    width: 100%;
+  }
+}
