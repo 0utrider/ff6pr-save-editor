@@ -11,6 +11,7 @@ import * as lores from "../../data/lores.ts";
 import * as rages from "../../data/rages.ts";
 import * as characterRoster from "../../data/characterRoster.ts";
 import type { SaveFile } from "../../model/saveFile.ts";
+import type { Character } from "../../model/character.ts";
 
 type SubTabKey = "bushido" | "blitz" | "dances" | "lore" | "rage";
 
@@ -72,14 +73,34 @@ const CONFIGS: SkillConfig[] = [
 
 const NOT_DETECTED = -1;
 
-// jobId alone isn't enough to find the owner: several jobIds are shared
-// with NPCs (jobId 11 — Dance's owner, Mog — is also shared by the nine
-// NPC moogles, so a naive "first character with this jobId" match picks
-// whichever NPC moogle happens to sort first, not Mog). The roster's own
-// isNpc flag disambiguates, matching HANDOFF's roster note that jobId is
-// only safe for this lookup once NPCs are excluded.
-function findOwnerRosterEntry(jobId: number): characterRoster.RosterEntry | undefined {
-  return characterRoster.All.find((r) => r.jobId === jobId && !r.isNpc);
+// The roster's own englishName for a job — display-only, never used to
+// find a character (see findAutoOwner for why).
+function ownerDisplayName(jobId: number): string | undefined {
+  return characterRoster.All.find((r) => r.jobId === jobId && !r.isNpc)?.englishName;
+}
+
+// jobId is the stable identifier (per HANDOFF: the save's own `id` shifts
+// with Three Scenarios recruitment order and must never be used for
+// identity) — so matching must go through the SAVE's characters by their
+// own jobId field, never through the static roster table's id. An earlier
+// version of this function did exactly the id-based lookup HANDOFF warns
+// against, which is exactly why Rage picked "??????" (roster id 24) instead
+// of the save's actual Gau, and Bushido picked Celes instead of Cyan — this
+// save's own character ids don't match the roster table's assumed order.
+//
+// jobId alone still isn't quite enough: several jobIds are shared with
+// NPCs (jobId 11 — Dance's owner, Mog — is also shared by nine NPC
+// moogles, all of whom appear as full character entries in the save). The
+// tiebreaker is ability data: every real playable character's abilityList
+// is seeded with all spell slots (never empty), while these NPC entries
+// have a completely empty abilityList. Prefer whichever jobId-matching
+// candidate has the most ability entries.
+function findAutoOwner(characters: readonly Character[], jobId: number): Character | undefined {
+  const candidates = characters.filter((c) => c.jobId === jobId);
+  if (candidates.length === 0) return undefined;
+  return candidates.reduce((best, c) =>
+    c.abilities.allAbilities().length > best.abilities.allAbilities().length ? c : best,
+  );
 }
 
 export function SkillsTab({ save }: { save: SaveFile }) {
@@ -90,8 +111,7 @@ export function SkillsTab({ save }: { save: SaveFile }) {
   const config = CONFIGS.find((c) => c.key === sub)!;
   const characters = save.userData.characters;
 
-  const ownerRosterEntry = findOwnerRosterEntry(config.ownerJobId);
-  const autoOwner = ownerRosterEntry ? characters.find((c) => c.id === ownerRosterEntry.id) : undefined;
+  const autoOwner = findAutoOwner(characters, config.ownerJobId);
 
   const selectedId = overrides[sub] ?? autoOwner?.id ?? NOT_DETECTED;
   const character = characters.find((c) => c.id === selectedId);
@@ -111,7 +131,7 @@ export function SkillsTab({ save }: { save: SaveFile }) {
       <div style={{ height: "0.9rem" }} />
       {!character ? (
         <WarningBanner tone="info">
-          {ownerRosterEntry?.englishName ?? "This character"} wasn't auto-detected in this save —
+          {ownerDisplayName(config.ownerJobId) ?? "This character"} wasn't auto-detected in this save —
           that's expected if they haven't joined your party yet. Pick a character above once
           they've joined, or manually select one now.
         </WarningBanner>

@@ -4,6 +4,7 @@ import styles from "./Dropdown.module.css";
 export interface DropdownOption {
   value: number | string;
   label: string;
+  disabled?: boolean;
 }
 
 interface DropdownProps {
@@ -22,7 +23,7 @@ export function Dropdown({ label, value, options, onChange, class: className }: 
       onChange={(e: JSX.TargetedEvent<HTMLSelectElement>) => onChange(e.currentTarget.value)}
     >
       {options.map((opt) => (
-        <option key={opt.value} value={String(opt.value)}>
+        <option key={opt.value} value={String(opt.value)} disabled={opt.disabled}>
           {opt.label}
         </option>
       ))}

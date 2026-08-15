@@ -1,15 +1,8 @@
 import { NumberField } from "../components/NumberField.tsx";
-import { Dropdown } from "../components/Dropdown.tsx";
 import { useForceUpdate } from "../hooks.ts";
-import * as espers from "../../data/espers.ts";
 import * as levelGrowth from "../../data/levelGrowth.ts";
 import type { Character } from "../../model/character.ts";
 import styles from "./RosterStats.module.css";
-
-const ESPER_OPTIONS = [
-  { value: 0, label: "(none)" },
-  ...espers.All.map((e) => ({ value: e.id, label: e.name })),
-];
 
 export function RosterStats({ character }: { character: Character }) {
   const forceUpdate = useForceUpdate();
@@ -59,15 +52,6 @@ export function RosterStats({ character }: { character: Character }) {
             value={stats.additionalMaxMp}
             onChange={(v) => {
               stats.additionalMaxMp = v;
-              forceUpdate();
-            }}
-          />
-          <Dropdown
-            label="Equipped Esper"
-            value={character.equippedEsperId}
-            options={ESPER_OPTIONS}
-            onChange={(v) => {
-              character.equippedEsperId = Number(v);
               forceUpdate();
             }}
           />
