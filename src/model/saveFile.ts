@@ -55,11 +55,20 @@ export class SaveFile {
   // in the browser — the UI triggers a Blob download with these bytes
   // rather than saving in place.
   async save(): Promise<Uint8Array> {
+    // Re-point both slots at the live nodes before stringifying — save()
+    // can be called more than once per loaded file (download, keep
+    // editing, download again), and after the first call these slots
+    // already hold strings, so rewrapping them directly would double- (or
+    // triple-, etc.) encode instead of capturing the current edits. This
+    // was a real, reproducible bug: it bloats the file and crashes the
+    // game on load.
     this.userData.commit();
+    this.top.userData = this.userData.node;
     rewrap(this.top, "userData");
 
     if (this.mapData) {
       this.veldt?.commit();
+      this.top.mapData = this.mapData;
       rewrap(this.top, "mapData");
     }
 

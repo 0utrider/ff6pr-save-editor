@@ -155,6 +155,12 @@ export class CharacterStats {
   }
 
   commit(): void {
+    // Re-point the slot at the live node before stringifying — save() can
+    // run more than once per loaded file (e.g. download, keep editing,
+    // download again), and after the first run this.characterNode.parameter
+    // is already a string; rewrapping a string double-encodes it instead of
+    // capturing the current edits.
+    this.characterNode.parameter = this.node;
     rewrap(this.characterNode, "parameter");
   }
 }

@@ -150,6 +150,34 @@ describe("SaveFile, against real save data", () => {
     expect(character.stats.additionalLevel).toBe(50);
   });
 
+  test("save() is idempotent — repeated calls on the same instance don't double-wrap nested JSON", async () => {
+    if (!mainSlotFile) throw new Error("no main slot file found");
+    // Regression test for a real bug: downloading, making another edit, and
+    // downloading again (same SaveFile instance, no reload in between) used
+    // to re-stringify already-stringified fields (userData, mapData,
+    // parameter, abilityList, abilityDictionary, ownedCharacterList,
+    // ownedMagicStoneList) on every extra save() call. The file grew ~1.5x
+    // per extra save and crashed the game on loading the menu.
+    const save = await SaveFile.load(mainSlotFile.bytes);
+
+    const out1 = await save.save();
+    save.userData.characters[0].stats.additionalPower = 77;
+    const out2 = await save.save();
+    save.userData.normalInventory.add(9999, 1);
+    const out3 = await save.save();
+
+    // Byte size should stay roughly flat across saves, not balloon with
+    // each additional call (the bug produced >20% growth per extra save).
+    expect(out2.length).toBeLessThan(out1.length * 1.1);
+    expect(out3.length).toBeLessThan(out1.length * 1.1);
+
+    // Every intervening edit must still be present in the final file —
+    // fixing the double-wrap must not come at the cost of losing edits.
+    const reloaded = await SaveFile.load(out3);
+    expect(reloaded.userData.characters[0].stats.additionalPower).toBe(77);
+    expect(reloaded.userData.normalInventory.stacks.some((s) => s.itemId === 9999)).toBe(true);
+  });
+
   test("Veldt encounters mark-all/clear-all round-trip through save/reload", async () => {
     if (!mainSlotFile) throw new Error("no main slot file found");
     const save = await SaveFile.load(mainSlotFile.bytes);

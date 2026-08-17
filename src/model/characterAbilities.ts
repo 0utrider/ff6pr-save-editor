@@ -197,7 +197,14 @@ export class CharacterAbilities {
   }
 
   commit(): void {
+    // Re-point both slots at the live nodes before stringifying — see the
+    // matching comment in characterStats.ts: save() can run more than once
+    // per loaded file, and after the first run these slots already hold
+    // strings, so rewrapping them directly would double-encode instead of
+    // capturing the current edits.
+    this.characterNode.abilityList = this.abilityListNode;
     rewrap(this.characterNode, "abilityList");
+    this.characterNode.abilityDictionary = this.abilityDictNode;
     rewrap(this.characterNode, "abilityDictionary");
   }
 }

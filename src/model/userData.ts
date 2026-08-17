@@ -88,9 +88,16 @@ export class UserData {
     this.normalInventory.commit();
     this.importantInventory.commit();
     this.warehouseInventory.commit();
+    // Re-point both slots at the live nodes before stringifying — save()
+    // can run more than once per loaded file (download, keep editing,
+    // download again), and after the first run these slots already hold
+    // strings, so rewrapping them directly would double-encode instead of
+    // capturing the current edits.
+    this.node.ownedCharacterList = this.ownedCharsRoot;
     rewrap(this.node, "ownedCharacterList");
 
     this.espersRoot.target = [...this.ownedEsperIds].sort((a, b) => a - b);
+    this.node.ownedMagicStoneList = this.espersRoot;
     rewrap(this.node, "ownedMagicStoneList");
   }
 }
