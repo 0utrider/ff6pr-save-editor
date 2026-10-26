@@ -104,6 +104,10 @@
   color: var(--text);
 }
 
+.instructionsBody a {
+  color: var(--accent-alt);
+}
+
 .instructionsBody p {
   margin: 0 0 0.9rem;
 }

@@ -95,6 +95,15 @@ export function LandingScreen({ onLoaded }: LandingScreenProps) {
             that's just metadata. Sort by date modified: the largest, most recent file is usually your
             latest save.
           </p>
+          <p>
+            <strong>More Info</strong>
+            <br />
+            See the{" "}
+            <a href="https://github.com/0utrider/ff6pr-save-editor#readme" target="_blank" rel="noopener noreferrer">
+              project README on GitHub
+            </a>{" "}
+            for details, supported features, and known limitations.
+          </p>
         </div>
       </details>
     </div>
